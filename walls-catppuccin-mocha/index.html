@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Beautiful Catppuccin Mocha Wallpapers Gallery - Browse and download stunning wallpapers">
+    <title>Catppuccin Mocha Wallpapers</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Catppuccin Mocha Wallpapers</h1>
+            <p class="subtitle">A curated collection of beautiful wallpapers</p>
+            <div class="stats">
+                <span id="imageCount">Loading...</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search wallpapers..." autocomplete="off">
+        </div>
+
+        <div class="gallery" id="gallery">
+            <!-- Images will be dynamically loaded here -->
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading wallpapers...</p>
+        </div>
+    </main>
+
+    <!-- Fullscreen Viewer Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <button class="modal-close" id="modalClose" aria-label="Close viewer">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <button class="modal-prev" id="modalPrev" aria-label="Previous image">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+        <button class="modal-next" id="modalNext" aria-label="Next image">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="">
+            <div class="modal-info">
+                <span id="modalFilename" class="modal-filename"></span>
+                <button class="download-btn" id="modalDownload" aria-label="Download image">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Wallpapers sourced from various artists. Original collection by <a href="https://github.com/orangci" target="_blank">orangci</a></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

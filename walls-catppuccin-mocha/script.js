@@ -92,10 +92,10 @@ async function getImagesFromGitHubAPI() {
                         .filter(item => {
                             const lowerPath = item.path.toLowerCase();
                             return imageExtensions.some(ext => lowerPath.endsWith(ext)) &&
-                                   item.path.startsWith('walls-catppuccin-mocha/') &&
-                                   !item.path.substring('walls-catppuccin-mocha/'.length).includes('/'); // Only files directly in the folder
+                                   !item.path.includes('/') && // Only root level files
+                                   item.path !== 'README.md';
                         })
-                        .map(item => item.path.substring('walls-catppuccin-mocha/'.length)) // Remove folder prefix
+                        .map(item => item.path)
                         .sort();
                 }
             }
@@ -135,7 +135,7 @@ function createGalleryItem(imageName, index) {
     item.tabIndex = 0;
     
     const img = document.createElement('img');
-    img.src = `walls-catppuccin-mocha/${imageName}`;
+    img.src = imageName;
     img.alt = imageName.replace(/\.[^/.]+$/, '');
     img.loading = 'lazy';
     img.decoding = 'async';
@@ -160,7 +160,7 @@ function createGalleryItem(imageName, index) {
     
     downloadBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        downloadImage(`walls-catppuccin-mocha/${imageName}`);
+        downloadImage(imageName);
     });
     
     info.appendChild(name);
@@ -207,14 +207,13 @@ function initLazyLoading() {
 function openModal(index) {
     currentImageIndex = index;
     const imageName = filteredImages[index];
-    const imagePath = `walls-catppuccin-mocha/${imageName}`;
-    modalImage.src = imagePath;
+    modalImage.src = imageName;
     modalFilename.textContent = imageName;
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
     
     // Update download button
-    modalDownload.onclick = () => downloadImage(imagePath);
+    modalDownload.onclick = () => downloadImage(imageName);
     
     // Update navigation buttons
     modalPrev.style.display = filteredImages.length > 1 ? 'flex' : 'none';
@@ -249,10 +248,10 @@ function nextImage() {
 }
 
 // Download image
-function downloadImage(imagePath) {
+function downloadImage(imageName) {
     const link = document.createElement('a');
-    link.href = imagePath;
-    link.download = imagePath.split('/').pop(); // Get just the filename
+    link.href = imageName;
+    link.download = imageName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
