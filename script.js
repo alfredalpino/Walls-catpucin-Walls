@@ -22,7 +22,7 @@ const imageCount = document.getElementById('imageCount');
 async function loadImages() {
     try {
         // First, try to load from images.json
-        const jsonResponse = await fetch('images.json');
+        const jsonResponse = await fetch('./images.json');
         if (jsonResponse.ok) {
             allImages = await jsonResponse.json();
         } else {
@@ -135,10 +135,16 @@ function createGalleryItem(imageName, index) {
     item.tabIndex = 0;
     
     const img = document.createElement('img');
-    img.src = `walls-catppuccin-mocha/${imageName}`;
+    // Use relative path - works on both local and GitHub Pages
+    img.src = `./walls-catppuccin-mocha/${imageName}`;
     img.alt = imageName.replace(/\.[^/.]+$/, '');
     img.loading = 'lazy';
     img.decoding = 'async';
+    
+    // Add error handling
+    img.onerror = function() {
+        console.error('Failed to load image:', img.src);
+    };
     
     const info = document.createElement('div');
     info.className = 'gallery-item-info';
@@ -160,7 +166,7 @@ function createGalleryItem(imageName, index) {
     
     downloadBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        downloadImage(`walls-catppuccin-mocha/${imageName}`);
+        downloadImage(`./walls-catppuccin-mocha/${imageName}`);
     });
     
     info.appendChild(name);
@@ -207,11 +213,16 @@ function initLazyLoading() {
 function openModal(index) {
     currentImageIndex = index;
     const imageName = filteredImages[index];
-    const imagePath = `walls-catppuccin-mocha/${imageName}`;
+    const imagePath = `./walls-catppuccin-mocha/${imageName}`;
     modalImage.src = imagePath;
     modalFilename.textContent = imageName;
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+    
+    // Add error handling
+    modalImage.onerror = function() {
+        console.error('Failed to load image in modal:', imagePath);
+    };
     
     // Update download button
     modalDownload.onclick = () => downloadImage(imagePath);
