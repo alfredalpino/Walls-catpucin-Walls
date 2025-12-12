@@ -166,7 +166,8 @@ function createGalleryItem(imageName, index) {
     
     downloadBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        downloadImage(`./walls-catppuccin-mocha/${imageName}`);
+        const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
+        downloadImage(`${baseUrl}/walls-catppuccin-mocha/${imageName}`);
     });
     
     info.appendChild(name);
@@ -213,15 +214,20 @@ function initLazyLoading() {
 function openModal(index) {
     currentImageIndex = index;
     const imageName = filteredImages[index];
-    const imagePath = `./walls-catppuccin-mocha/${imageName}`;
+    const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
+    const imagePath = `${baseUrl}/walls-catppuccin-mocha/${imageName}`;
     modalImage.src = imagePath;
     modalFilename.textContent = imageName;
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
     
-    // Add error handling
+    // Add error handling with fallback
     modalImage.onerror = function() {
         console.error('Failed to load image in modal:', imagePath);
+        // Try relative path as fallback
+        if (!modalImage.src.includes('./')) {
+            modalImage.src = `./walls-catppuccin-mocha/${imageName}`;
+        }
     };
     
     // Update download button
@@ -260,13 +266,38 @@ function nextImage() {
 }
 
 // Download image
-function downloadImage(imagePath) {
-    const link = document.createElement('a');
-    link.href = imagePath;
-    link.download = imagePath.split('/').pop(); // Get just the filename
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+async function downloadImage(imagePath) {
+    try {
+        // Fetch the image as a blob
+        const response = await fetch(imagePath);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch image: ${response.statusText}`);
+        }
+        
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        
+        // Create download link
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = imagePath.split('/').pop(); // Get just the filename
+        document.body.appendChild(link);
+        link.click();
+        
+        // Cleanup
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error('Download error:', error);
+        // Fallback: try direct download
+        const link = document.createElement('a');
+        link.href = imagePath;
+        link.download = imagePath.split('/').pop();
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 }
 
 // Search functionality
