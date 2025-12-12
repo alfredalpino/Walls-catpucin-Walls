@@ -135,15 +135,21 @@ function createGalleryItem(imageName, index) {
     item.tabIndex = 0;
     
     const img = document.createElement('img');
-    // Use relative path - works on both local and GitHub Pages
-    img.src = `./walls-catppuccin-mocha/${imageName}`;
+    // Use absolute path for GitHub Pages compatibility
+    const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
+    const imageUrl = `${baseUrl}/walls-catppuccin-mocha/${imageName}`;
+    img.src = imageUrl;
     img.alt = imageName.replace(/\.[^/.]+$/, '');
     img.loading = 'lazy';
     img.decoding = 'async';
     
-    // Add error handling
+    // Add error handling with fallback
     img.onerror = function() {
         console.error('Failed to load image:', img.src);
+        // Try relative path as fallback
+        if (!img.src.includes('./')) {
+            img.src = `./walls-catppuccin-mocha/${imageName}`;
+        }
     };
     
     const info = document.createElement('div');
