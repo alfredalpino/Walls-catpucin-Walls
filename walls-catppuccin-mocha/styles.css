@@ -36,7 +36,7 @@ body {
 header {
     background: var(--bg-mantle);
     border-bottom: 1px solid var(--surface0);
-    padding: 2rem 1rem;
+    padding: 0.5rem 1rem;
     text-align: center;
     position: sticky;
     top: 0;
@@ -45,29 +45,37 @@ header {
     background: rgba(24, 24, 37, 0.9);
 }
 
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
 .header-content h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
     background: linear-gradient(135deg, var(--accent), var(--accent-hover));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    line-height: 1.2;
 }
 
 .subtitle {
-    color: var(--text-muted);
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+    display: none;
 }
 
 .stats {
     display: inline-block;
-    padding: 0.5rem 1rem;
+    padding: 0.25rem 0.625rem;
     background: var(--surface0);
     border-radius: 9999px;
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     color: var(--text-muted);
+    line-height: 1.2;
 }
 
 main {
@@ -400,7 +408,11 @@ footer a:hover {
 /* Responsive Design */
 @media (max-width: 768px) {
     .header-content h1 {
-        font-size: 2rem;
+        font-size: 1.125rem;
+    }
+    
+    .header-content {
+        gap: 0.5rem;
     }
     
     .gallery {
@@ -430,11 +442,16 @@ footer a:hover {
     }
     
     header {
-        padding: 1.5rem 1rem;
+        padding: 0.5rem 1rem;
     }
     
     .header-content h1 {
-        font-size: 1.75rem;
+        font-size: 1rem;
+    }
+    
+    .stats {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
     }
 }
 
